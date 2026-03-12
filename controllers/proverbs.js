@@ -1,6 +1,7 @@
 const mongodb = require("../db/connect");
 const ObjectId = require("mongodb").ObjectId;
 
+// GET all proverbs
 const getAllProverbs = async (req, res) => {
   try {
     const result = await mongodb.getDb().collection("proverbs").find();
@@ -11,27 +12,31 @@ const getAllProverbs = async (req, res) => {
   }
 };
 
+// GET single proverb
 const getSingleProverb = async (req, res) => {
   try {
     const proverbId = new ObjectId(req.params.id);
-    const result = await mongodb
+
+    const proverb = await mongodb
       .getDb()
       .collection("proverbs")
-      .find({ _id: proverbId });
+      .findOne({ _id: proverbId });
 
-    const proverb = await result.toArray();
-    res.status(200).json(proverb[0]);
+    res.status(200).json(proverb);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
+// CREATE proverb
 const createProverb = async (req, res) => {
   try {
     const proverb = {
       proverb: req.body.proverb,
       meaning: req.body.meaning,
-      tribe: req.body.tribe
+      tribe: req.body.tribe,
+      provider: req.body.provider,
+      date: req.body.date
     };
 
     const response = await mongodb
@@ -40,9 +45,12 @@ const createProverb = async (req, res) => {
       .insertOne(proverb);
 
     if (response.acknowledged) {
-      res.status(201).json(response);
+      res.status(201).json({
+        message: "Proverb created successfully",
+        id: response.insertedId
+      });
     } else {
-      res.status(500).json(response.error);
+      res.status(500).json("Failed to create proverb");
     }
   } catch (error) {
     res.status(500).json(error);
