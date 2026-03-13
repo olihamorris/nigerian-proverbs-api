@@ -1,62 +1,91 @@
 const express = require("express");
 const router = express.Router();
-
 const proverbsController = require("../controllers/proverbs");
 
 /**
  * @swagger
- * /api/proverbs:
- *   get:
- *     summary: Retrieve all Nigerian proverbs
- *     responses:
- *       200:
- *         description: Successfully retrieved proverbs
+ * tags:
+ *   name: Proverbs
+ *   description: Nigerian Proverbs API
  */
-router.get("/", proverbsController.getAllProverbs);
 
 /**
  * @swagger
- * /api/proverbs/{id}:
+ * /proverbs:
  *   get:
- *     summary: Retrieve a proverb by ID
+ *     summary: Retrieve all Nigerian proverbs
+ *     tags: [Proverbs]
+ *     responses:
+ *       200:
+ *         description: A list of proverbs
+ */
+router.get("/", proverbsController.getAll);
+
+/**
+ * @swagger
+ * /proverbs/{id}:
+ *   get:
+ *     summary: Retrieve a single proverb by ID
+ *     tags: [Proverbs]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID of the proverb
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Successfully retrieved proverb
+ *         description: A single proverb
  */
-router.get("/:id", proverbsController.getSingleProverb);
+router.get("/:id", proverbsController.getSingle);
 
 /**
  * @swagger
- * /api/proverbs:
+ * /proverbs:
  *   post:
  *     summary: Create a new proverb
+ *     tags: [Proverbs]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Proverb'
+ *             type: object
+ *             properties:
+ *               proverb:
+ *                 type: string
+ *               meaning:
+ *                 type: string
+ *               tribe:
+ *                 type: string
+ *               provider:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *               language:
+ *                 type: string
+ *               category:
+ *                 type: string
  *     responses:
  *       201:
- *         description: Proverb created successfully
+ *         description: Proverb successfully created
+ *       400:
+ *         description: Invalid input
  */
 router.post("/", proverbsController.createProverb);
 
 /**
  * @swagger
- * /api/proverbs/{id}:
+ * /proverbs/{id}:
  *   put:
  *     summary: Update a proverb
+ *     tags: [Proverbs]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: Proverb ID
  *         schema:
  *           type: string
  *     requestBody:
@@ -64,27 +93,46 @@ router.post("/", proverbsController.createProverb);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Proverb'
+ *             type: object
+ *             properties:
+ *               proverb:
+ *                 type: string
+ *               meaning:
+ *                 type: string
+ *               tribe:
+ *                 type: string
+ *               provider:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *               language:
+ *                 type: string
+ *               category:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Proverb updated successfully
+ *         description: Proverb updated
+ *       400:
+ *         description: Invalid input
  */
 router.put("/:id", proverbsController.updateProverb);
 
 /**
  * @swagger
- * /api/proverbs/{id}:
+ * /proverbs/{id}:
  *   delete:
  *     summary: Delete a proverb
+ *     tags: [Proverbs]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: Proverb ID
  *         schema:
  *           type: string
  *     responses:
  *       204:
- *         description: Proverb deleted successfully
+ *         description: Proverb deleted
  */
 router.delete("/:id", proverbsController.deleteProverb);
 

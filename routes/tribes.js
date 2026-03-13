@@ -1,62 +1,91 @@
 const express = require("express");
 const router = express.Router();
-
 const tribesController = require("../controllers/tribes");
 
 /**
  * @swagger
- * /api/tribes:
- *   get:
- *     summary: Retrieve all Nigerian tribes
- *     responses:
- *       200:
- *         description: Successfully retrieved tribes
+ * tags:
+ *   name: Tribes
+ *   description: Nigerian Tribes API
  */
-router.get("/", tribesController.getAllTribes);
 
 /**
  * @swagger
- * /api/tribes/{id}:
+ * /tribes:
  *   get:
- *     summary: Retrieve a tribe by ID
+ *     summary: Retrieve all Nigerian tribes
+ *     tags: [Tribes]
+ *     responses:
+ *       200:
+ *         description: A list of tribes
+ */
+router.get("/", tribesController.getAll);
+
+/**
+ * @swagger
+ * /tribes/{id}:
+ *   get:
+ *     summary: Retrieve a single tribe by ID
+ *     tags: [Tribes]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: Tribe ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Successfully retrieved tribe
+ *         description: A single tribe
  */
-router.get("/:id", tribesController.getSingleTribe);
+router.get("/:id", tribesController.getSingle);
 
 /**
  * @swagger
- * /api/tribes:
+ * /tribes:
  *   post:
  *     summary: Create a new tribe
+ *     tags: [Tribes]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Tribe'
+ *             type: object
+ *             properties:
+ *               tribe:
+ *                 type: string
+ *               region:
+ *                 type: string
+ *               language:
+ *                 type: string
+ *               population:
+ *                 type: string
+ *               famousProverb:
+ *                 type: string
+ *               provider:
+ *                 type: string
+ *               date:
+ *                 type: string
  *     responses:
  *       201:
- *         description: Tribe created successfully
+ *         description: Tribe successfully created
+ *       400:
+ *         description: Invalid input
  */
 router.post("/", tribesController.createTribe);
 
 /**
  * @swagger
- * /api/tribes/{id}:
+ * /tribes/{id}:
  *   put:
  *     summary: Update a tribe
+ *     tags: [Tribes]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: Tribe ID
  *         schema:
  *           type: string
  *     requestBody:
@@ -64,27 +93,46 @@ router.post("/", tribesController.createTribe);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Tribe'
+ *             type: object
+ *             properties:
+ *               tribe:
+ *                 type: string
+ *               region:
+ *                 type: string
+ *               language:
+ *                 type: string
+ *               population:
+ *                 type: string
+ *               famousProverb:
+ *                 type: string
+ *               provider:
+ *                 type: string
+ *               date:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Tribe updated successfully
+ *         description: Tribe updated
+ *       400:
+ *         description: Invalid input
  */
 router.put("/:id", tribesController.updateTribe);
 
 /**
  * @swagger
- * /api/tribes/{id}:
+ * /tribes/{id}:
  *   delete:
  *     summary: Delete a tribe
+ *     tags: [Tribes]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: Tribe ID
  *         schema:
  *           type: string
  *     responses:
  *       204:
- *         description: Tribe deleted successfully
+ *         description: Tribe deleted
  */
 router.delete("/:id", tribesController.deleteTribe);
 
