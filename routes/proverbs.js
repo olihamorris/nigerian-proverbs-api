@@ -8,7 +8,6 @@ const proverbsController = require("../controllers/proverbs");
  * /proverbs:
  *   get:
  *     summary: Retrieve all Nigerian proverbs
- *     description: Returns a list of all proverbs stored in the database
  *     responses:
  *       200:
  *         description: Successfully retrieved proverbs
@@ -24,7 +23,6 @@ router.get("/", proverbsController.getAllProverbs);
  *       - in: path
  *         name: id
  *         required: true
- *         description: The proverb ID
  *         schema:
  *           type: string
  *     responses:
@@ -38,12 +36,15 @@ router.get("/:id", proverbsController.getSingleProverb);
  * /proverbs:
  *   post:
  *     summary: Create a new proverb
- *     description: Adds a proverb to the database
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Proverb'
  *     responses:
  *       201:
  *         description: Proverb created successfully
- *       400:
- *         description: Invalid input
  */
 router.post("/", proverbsController.createProverb);
 
@@ -56,9 +57,14 @@ router.post("/", proverbsController.createProverb);
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the proverb to update
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Proverb'
  *     responses:
  *       200:
  *         description: Proverb updated successfully
@@ -74,7 +80,6 @@ router.put("/:id", proverbsController.updateProverb);
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the proverb to delete
  *         schema:
  *           type: string
  *     responses:

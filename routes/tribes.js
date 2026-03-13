@@ -8,7 +8,6 @@ const tribesController = require("../controllers/tribes");
  * /tribes:
  *   get:
  *     summary: Retrieve all Nigerian tribes
- *     description: Returns a list of tribes stored in the database
  *     responses:
  *       200:
  *         description: Successfully retrieved tribes
@@ -24,7 +23,6 @@ router.get("/", tribesController.getAllTribes);
  *       - in: path
  *         name: id
  *         required: true
- *         description: The tribe ID
  *         schema:
  *           type: string
  *     responses:
@@ -38,12 +36,15 @@ router.get("/:id", tribesController.getSingleTribe);
  * /tribes:
  *   post:
  *     summary: Create a new tribe
- *     description: Adds a tribe to the database
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Tribe'
  *     responses:
  *       201:
  *         description: Tribe created successfully
- *       400:
- *         description: Invalid input
  */
 router.post("/", tribesController.createTribe);
 
@@ -56,9 +57,14 @@ router.post("/", tribesController.createTribe);
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the tribe to update
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Tribe'
  *     responses:
  *       200:
  *         description: Tribe updated successfully
@@ -74,7 +80,6 @@ router.put("/:id", tribesController.updateTribe);
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the tribe to delete
  *         schema:
  *           type: string
  *     responses:
