@@ -5,7 +5,7 @@ const proverbsController = require("../controllers/proverbs");
 
 /**
  * @swagger
- * /proverbs:
+ * /api/proverbs:
  *   get:
  *     summary: Retrieve all Nigerian proverbs
  *     responses:
@@ -16,7 +16,7 @@ router.get("/", proverbsController.getAllProverbs);
 
 /**
  * @swagger
- * /proverbs/{id}:
+ * /api/proverbs/{id}:
  *   get:
  *     summary: Retrieve a proverb by ID
  *     parameters:
@@ -33,7 +33,7 @@ router.get("/:id", proverbsController.getSingleProverb);
 
 /**
  * @swagger
- * /proverbs:
+ * /api/proverbs:
  *   post:
  *     summary: Create a new proverb
  *     requestBody:
@@ -50,7 +50,7 @@ router.post("/", proverbsController.createProverb);
 
 /**
  * @swagger
- * /proverbs/{id}:
+ * /api/proverbs/{id}:
  *   put:
  *     summary: Update a proverb
  *     parameters:
@@ -73,7 +73,7 @@ router.put("/:id", proverbsController.updateProverb);
 
 /**
  * @swagger
- * /proverbs/{id}:
+ * /api/proverbs/{id}:
  *   delete:
  *     summary: Delete a proverb
  *     parameters:

@@ -5,7 +5,7 @@ const tribesController = require("../controllers/tribes");
 
 /**
  * @swagger
- * /tribes:
+ * /api/tribes:
  *   get:
  *     summary: Retrieve all Nigerian tribes
  *     responses:
@@ -16,7 +16,7 @@ router.get("/", tribesController.getAllTribes);
 
 /**
  * @swagger
- * /tribes/{id}:
+ * /api/tribes/{id}:
  *   get:
  *     summary: Retrieve a tribe by ID
  *     parameters:
@@ -33,7 +33,7 @@ router.get("/:id", tribesController.getSingleTribe);
 
 /**
  * @swagger
- * /tribes:
+ * /api/tribes:
  *   post:
  *     summary: Create a new tribe
  *     requestBody:
@@ -50,7 +50,7 @@ router.post("/", tribesController.createTribe);
 
 /**
  * @swagger
- * /tribes/{id}:
+ * /api/tribes/{id}:
  *   put:
  *     summary: Update a tribe
  *     parameters:
@@ -73,7 +73,7 @@ router.put("/:id", tribesController.updateTribe);
 
 /**
  * @swagger
- * /tribes/{id}:
+ * /api/tribes/{id}:
  *   delete:
  *     summary: Delete a tribe
  *     parameters:
