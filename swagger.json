@@ -23,24 +23,14 @@
       "post": {
         "summary": "Create a new proverb",
         "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "proverb": "What a child says he has heard at home",
-                "meaning": "Children reflect what they hear in their homes",
-                "tribe": "Yoruba",
-                "provider": "Morris",
-                "date": "2026",
-                "language": "Yoruba",
-                "category": "Family"
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/ProverbBody"
         },
         "responses": {
           "201": {
             "description": "Proverb successfully created"
+          },
+          "400": {
+            "description": "Invalid input"
           }
         }
       }
@@ -79,20 +69,7 @@
           }
         ],
         "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "proverb": "Updated proverb",
-                "meaning": "Updated meaning",
-                "tribe": "Igbo",
-                "provider": "Morris",
-                "date": "2026",
-                "language": "Igbo",
-                "category": "Wisdom"
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/ProverbBody"
         },
         "responses": {
           "200": {
@@ -133,24 +110,127 @@
       "post": {
         "summary": "Create a new tribe",
         "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "tribe": "Yoruba",
-                "region": "South West Nigeria",
-                "language": "Yoruba",
-                "population": "Over 40 million",
-                "famousProverb": "What a child says he has heard at home",
-                "provider": "Morris",
-                "date": "2026"
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/TribeBody"
         },
         "responses": {
           "201": {
             "description": "Tribe successfully created"
+          }
+        }
+      }
+    },
+
+    "/tribes/{id}": {
+      "get": {
+        "summary": "Retrieve a single tribe by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single tribe"
+          }
+        }
+      },
+
+      "put": {
+        "summary": "Update a tribe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/TribeBody"
+        },
+        "responses": {
+          "200": {
+            "description": "Tribe updated"
+          }
+        }
+      },
+
+      "delete": {
+        "summary": "Delete a tribe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Tribe deleted"
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Proverb": {
+        "type": "object",
+        "properties": {
+          "proverb": { "type": "string" },
+          "meaning": { "type": "string" },
+          "tribe": { "type": "string" },
+          "provider": { "type": "string" },
+          "date": { "type": "string" },
+          "language": { "type": "string" },
+          "category": { "type": "string" }
+        }
+      },
+
+      "Tribe": {
+        "type": "object",
+        "properties": {
+          "tribe": { "type": "string" },
+          "region": { "type": "string" },
+          "language": { "type": "string" },
+          "population": { "type": "string" },
+          "famousProverb": { "type": "string" },
+          "provider": { "type": "string" },
+          "date": { "type": "string" }
+        }
+      }
+    },
+
+    "requestBodies": {
+      "ProverbBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Proverb"
+            }
+          }
+        }
+      },
+
+      "TribeBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Tribe"
+            }
           }
         }
       }
