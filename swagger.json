@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Nigerian Proverbs API",
-    "version": "1.0.0",
-    "description": "API for Nigerian proverbs and tribes"
+    "title": "Nigerian Proverbs and Tribes API",
+    "description": "API for managing Nigerian proverbs and tribes information.",
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://nigerian-proverbs-api.onrender.com"
+      "url": "http://localhost:8080"
     }
   ],
   "paths": {
@@ -16,7 +16,17 @@
         "summary": "Get all proverbs",
         "responses": {
           "200": {
-            "description": "Successful response"
+            "description": "List of proverbs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Proverb"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -41,7 +51,7 @@
     },
     "/proverbs/{id}": {
       "get": {
-        "summary": "Get one proverb",
+        "summary": "Get proverb by id",
         "parameters": [
           {
             "name": "id",
@@ -54,12 +64,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response"
+            "description": "Proverb found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proverb"
+                }
+              }
+            }
           }
         }
       },
       "put": {
-        "summary": "Update a proverb",
+        "summary": "Update proverb",
         "parameters": [
           {
             "name": "id",
@@ -71,6 +88,7 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -81,12 +99,12 @@
         },
         "responses": {
           "204": {
-            "description": "Updated successfully"
+            "description": "Proverb updated"
           }
         }
       },
       "delete": {
-        "summary": "Delete a proverb",
+        "summary": "Delete proverb",
         "parameters": [
           {
             "name": "id",
@@ -98,24 +116,36 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Deleted successfully"
+          "200": {
+            "description": "Proverb deleted"
           }
         }
       }
     },
+
     "/tribes": {
       "get": {
         "summary": "Get all tribes",
         "responses": {
           "200": {
-            "description": "Successful response"
+            "description": "List of tribes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tribe"
+                  }
+                }
+              }
+            }
           }
         }
       },
       "post": {
         "summary": "Create a tribe",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -131,9 +161,10 @@
         }
       }
     },
+
     "/tribes/{id}": {
       "get": {
-        "summary": "Get one tribe",
+        "summary": "Get tribe by id",
         "parameters": [
           {
             "name": "id",
@@ -146,12 +177,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response"
+            "description": "Tribe found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tribe"
+                }
+              }
+            }
           }
         }
       },
       "put": {
-        "summary": "Update a tribe",
+        "summary": "Update tribe",
         "parameters": [
           {
             "name": "id",
@@ -163,6 +201,7 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -173,12 +212,12 @@
         },
         "responses": {
           "204": {
-            "description": "Updated successfully"
+            "description": "Tribe updated"
           }
         }
       },
       "delete": {
-        "summary": "Delete a tribe",
+        "summary": "Delete tribe",
         "parameters": [
           {
             "name": "id",
@@ -190,25 +229,42 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Deleted successfully"
+          "200": {
+            "description": "Tribe deleted"
           }
         }
       }
     }
   },
+
   "components": {
     "schemas": {
+
       "Proverb": {
         "type": "object",
+        "required": [
+          "tribe",
+          "proverb",
+          "meaning",
+          "literalTranslation",
+          "usageContext",
+          "provider",
+          "date"
+        ],
         "properties": {
+          "tribe": {
+            "type": "string"
+          },
           "proverb": {
             "type": "string"
           },
           "meaning": {
             "type": "string"
           },
-          "tribe": {
+          "literalTranslation": {
+            "type": "string"
+          },
+          "usageContext": {
             "type": "string"
           },
           "provider": {
@@ -216,17 +272,21 @@
           },
           "date": {
             "type": "string"
-          },
-          "language": {
-            "type": "string"
-          },
-          "category": {
-            "type": "string"
           }
         }
       },
+
       "Tribe": {
         "type": "object",
+        "required": [
+          "name",
+          "region",
+          "language",
+          "population",
+          "culture",
+          "provider",
+          "date"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -240,17 +300,18 @@
           "population": {
             "type": "string"
           },
-          "state": {
-            "type": "string"
-          },
           "culture": {
             "type": "string"
           },
-          "description": {
+          "provider": {
+            "type": "string"
+          },
+          "date": {
             "type": "string"
           }
         }
       }
+
     }
   }
 }
