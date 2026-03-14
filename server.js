@@ -8,19 +8,19 @@ const port = process.env.PORT || 8080;
 
 app.use(express.json());
 
-/* Swagger documentation */
+/* Swagger */
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /* Routes */
 app.use("/proverbs", require("./routes/proverbs"));
 app.use("/tribes", require("./routes/tribes"));
 
-/* Home route */
+/* Home */
 app.get("/", (req, res) => {
-  res.send("Nigerian Proverbs API is running");
+  res.send("Nigerian Proverbs API running");
 });
 
-/* Database connection */
+/* Database */
 mongodb.initDb((err) => {
   if (err) {
     console.log(err);
