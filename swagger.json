@@ -3,7 +3,7 @@
   "info": {
     "title": "Nigerian Proverbs API",
     "version": "1.0.0",
-    "description": "An API that provides Nigerian proverbs and tribes information"
+    "description": "API for Nigerian proverbs and tribes"
   },
   "servers": [
     {
@@ -13,86 +13,34 @@
   "paths": {
     "/proverbs": {
       "get": {
-        "summary": "Retrieve all Nigerian proverbs",
+        "summary": "Get all proverbs",
         "responses": {
           "200": {
-            "description": "A list of proverbs"
+            "description": "List of proverbs"
           }
         }
       },
       "post": {
-        "summary": "Create a new proverb",
+        "summary": "Create a proverb",
         "requestBody": {
-          "$ref": "#/components/requestBodies/ProverbBody"
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "proverb": "When the moon is shining the cripple becomes hungry for a walk",
+                "meaning": "Good opportunities encourage people to act",
+                "tribe": "Igbo",
+                "provider": "Morris",
+                "date": "2026",
+                "language": "Igbo",
+                "category": "Opportunity"
+              }
+            }
+          }
         },
         "responses": {
           "201": {
-            "description": "Proverb successfully created"
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      }
-    },
-
-    "/proverbs/{id}": {
-      "get": {
-        "summary": "Retrieve a single proverb by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single proverb"
-          }
-        }
-      },
-
-      "put": {
-        "summary": "Update a proverb",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/ProverbBody"
-        },
-        "responses": {
-          "200": {
-            "description": "Proverb updated"
-          }
-        }
-      },
-
-      "delete": {
-        "summary": "Delete a proverb",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Proverb deleted"
+            "description": "Created"
           }
         }
       }
@@ -100,137 +48,34 @@
 
     "/tribes": {
       "get": {
-        "summary": "Retrieve all Nigerian tribes",
+        "summary": "Get all tribes",
         "responses": {
           "200": {
-            "description": "A list of tribes"
+            "description": "List of tribes"
           }
         }
       },
       "post": {
-        "summary": "Create a new tribe",
+        "summary": "Create a tribe",
         "requestBody": {
-          "$ref": "#/components/requestBodies/TribeBody"
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "tribe": "Yoruba",
+                "region": "South West",
+                "language": "Yoruba",
+                "population": "40 million",
+                "famousProverb": "What a child says he has heard at home",
+                "provider": "Morris",
+                "date": "2026"
+              }
+            }
+          }
         },
         "responses": {
           "201": {
-            "description": "Tribe successfully created"
-          }
-        }
-      }
-    },
-
-    "/tribes/{id}": {
-      "get": {
-        "summary": "Retrieve a single tribe by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single tribe"
-          }
-        }
-      },
-
-      "put": {
-        "summary": "Update a tribe",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/TribeBody"
-        },
-        "responses": {
-          "200": {
-            "description": "Tribe updated"
-          }
-        }
-      },
-
-      "delete": {
-        "summary": "Delete a tribe",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Tribe deleted"
-          }
-        }
-      }
-    }
-  },
-
-  "components": {
-    "schemas": {
-      "Proverb": {
-        "type": "object",
-        "properties": {
-          "proverb": { "type": "string" },
-          "meaning": { "type": "string" },
-          "tribe": { "type": "string" },
-          "provider": { "type": "string" },
-          "date": { "type": "string" },
-          "language": { "type": "string" },
-          "category": { "type": "string" }
-        }
-      },
-
-      "Tribe": {
-        "type": "object",
-        "properties": {
-          "tribe": { "type": "string" },
-          "region": { "type": "string" },
-          "language": { "type": "string" },
-          "population": { "type": "string" },
-          "famousProverb": { "type": "string" },
-          "provider": { "type": "string" },
-          "date": { "type": "string" }
-        }
-      }
-    },
-
-    "requestBodies": {
-      "ProverbBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Proverb"
-            }
-          }
-        }
-      },
-
-      "TribeBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Tribe"
-            }
+            "description": "Created"
           }
         }
       }
