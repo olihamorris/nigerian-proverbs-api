@@ -1,144 +1,78 @@
 const mongodb = require("../db/connect");
 const ObjectId = require("mongodb").ObjectId;
 
-// GET all proverbs
-const getAllProverbs = async (req, res) => {
-  try {
-    const result = await mongodb.getDb().collection("proverbs").find();
-    const proverbs = await result.toArray();
-    res.status(200).json(proverbs);
-  } catch (error) {
-    res.status(500).json(error);
-  }
+const getAll = async (req, res) => {
+  const result = await mongodb.getDb().db().collection("proverbs").find();
+  const proverbs = await result.toArray();
+  res.setHeader("Content-Type", "application/json");
+  res.status(200).json(proverbs);
 };
 
-// GET single proverb
-const getSingleProverb = async (req, res) => {
-  try {
-    const proverbId = new ObjectId(req.params.id);
-
-    const proverb = await mongodb
-      .getDb()
-      .collection("proverbs")
-      .findOne({ _id: proverbId });
-
-    res.status(200).json(proverb);
-  } catch (error) {
-    res.status(500).json(error);
-  }
+const getSingle = async (req, res) => {
+  const proverbId = new ObjectId(req.params.id);
+  const result = await mongodb.getDb().db().collection("proverbs").find({ _id: proverbId });
+  const proverb = await result.toArray();
+  res.setHeader("Content-Type", "application/json");
+  res.status(200).json(proverb[0]);
 };
 
-// CREATE proverb
 const createProverb = async (req, res) => {
-  try {
+  const proverb = {
+    proverb: req.body.proverb,
+    meaning: req.body.meaning,
+    tribe: req.body.tribe,
+    provider: req.body.provider,
+    date: req.body.date,
+    language: req.body.language,
+    category: req.body.category
+  };
 
-    if (
-      !req.body.proverb ||
-      !req.body.meaning ||
-      !req.body.tribe ||
-      !req.body.provider ||
-      !req.body.date ||
-      !req.body.language ||
-      !req.body.category
-    ) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+  const response = await mongodb.getDb().db().collection("proverbs").insertOne(proverb);
 
-    const proverb = {
-      proverb: req.body.proverb,
-      meaning: req.body.meaning,
-      tribe: req.body.tribe,
-      provider: req.body.provider,
-      date: req.body.date,
-      language: req.body.language,
-      category: req.body.category
-    };
-
-    const response = await mongodb
-      .getDb()
-      .collection("proverbs")
-      .insertOne(proverb);
-
-    if (response.acknowledged) {
-      res.status(201).json(response);
-    } else {
-      res.status(500).json(response.error);
-    }
-
-  } catch (error) {
-    res.status(500).json(error);
+  if (response.acknowledged) {
+    res.status(201).json(response);
+  } else {
+    res.status(500).json(response.error);
   }
 };
 
-// UPDATE proverb
 const updateProverb = async (req, res) => {
-  try {
+  const proverbId = new ObjectId(req.params.id);
 
-    if (
-      !req.body.proverb ||
-      !req.body.meaning ||
-      !req.body.tribe ||
-      !req.body.provider ||
-      !req.body.date ||
-      !req.body.language ||
-      !req.body.category
-    ) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+  const proverb = {
+    proverb: req.body.proverb,
+    meaning: req.body.meaning,
+    tribe: req.body.tribe,
+    provider: req.body.provider,
+    date: req.body.date,
+    language: req.body.language,
+    category: req.body.category
+  };
 
-    const proverbId = new ObjectId(req.params.id);
+  const response = await mongodb.getDb().db().collection("proverbs").replaceOne({ _id: proverbId }, proverb);
 
-    const proverb = {
-      proverb: req.body.proverb,
-      meaning: req.body.meaning,
-      tribe: req.body.tribe,
-      provider: req.body.provider,
-      date: req.body.date,
-      language: req.body.language,
-      category: req.body.category
-    };
-
-    const response = await mongodb
-      .getDb()
-      .collection("proverbs")
-      .replaceOne({ _id: proverbId }, proverb);
-
-    if (response.modifiedCount > 0) {
-      res.status(200).send();
-    } else {
-      res.status(500).json(response.error);
-    }
-
-  } catch (error) {
-    res.status(500).json(error);
+  if (response.modifiedCount > 0) {
+    res.status(204).send();
+  } else {
+    res.status(500).json(response.error);
   }
 };
 
-// DELETE proverb
 const deleteProverb = async (req, res) => {
-  try {
+  const proverbId = new ObjectId(req.params.id);
 
-    const proverbId = new ObjectId(req.params.id);
+  const response = await mongodb.getDb().db().collection("proverbs").deleteOne({ _id: proverbId });
 
-    const response = await mongodb
-      .getDb()
-      .collection("proverbs")
-      .deleteOne({ _id: proverbId });
-
-    if (response.deletedCount > 0) {
-      res.status(204).send();
-    } else {
-      res.status(500).json(response.error);
-    }
-
-  } catch (error) {
-    res.status(500).json(error);
+  if (response.deletedCount > 0) {
+    res.status(204).send();
+  } else {
+    res.status(500).json(response.error);
   }
 };
 
 module.exports = {
-  getAllProverbs,
-  getSingleProverb,
+  getAll,
+  getSingle,
   createProverb,
   updateProverb,
   deleteProverb
