@@ -7,8 +7,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
-    }
+    "url": "https://nigerian-proverbs-api.onrender.com"
+  }
   ],
   "paths": {
     "/proverbs": {
