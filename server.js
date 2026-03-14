@@ -12,15 +12,16 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /* Routes */
-app.use("/proverbs", require("./routes/proverbs"));
-app.use("/tribes", require("./routes/tribes"));
+const proverbsRoutes = require("./routes/proverbs");
 
-/* Home */
+app.use("/proverbs", proverbsRoutes);
+
+/* Home route */
 app.get("/", (req, res) => {
-  res.send("Nigerian Proverbs API running");
+  res.send("Nigerian Proverbs API");
 });
 
-/* Database */
+/* Database connection */
 mongodb.initDb((err) => {
   if (err) {
     console.log(err);

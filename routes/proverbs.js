@@ -1,28 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
-// Import controller
-const {
-  getAll,
-  getSingle,
-  createProverb,
-  updateProverb,
-  deleteProverb
-} = require("../controllers/proverbs");
+const controller = require("../controllers/proverbs");
 
-// GET all proverbs
-router.get("/", getAll);
+router.get("/", (req, res) => controller.getAll(req, res));
 
-// GET a single proverb
-router.get("/:id", getSingle);
+router.get("/:id", (req, res) => controller.getSingle(req, res));
 
-// CREATE a proverb
-router.post("/", createProverb);
+router.post("/", (req, res) => controller.createProverb(req, res));
 
-// UPDATE a proverb
-router.put("/:id", updateProverb);
+router.put("/:id", (req, res) => controller.updateProverb(req, res));
 
-// DELETE a proverb
-router.delete("/:id", deleteProverb);
+router.delete("/:id", (req, res) => controller.deleteProverb(req, res));
 
 module.exports = router;
