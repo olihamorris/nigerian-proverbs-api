@@ -26,26 +26,84 @@
           "required": true,
           "content": {
             "application/json": {
-              "example": {
-                "proverb": "When the moon is shining the cripple becomes hungry for a walk",
-                "meaning": "Good opportunities encourage people to act",
-                "tribe": "Igbo",
-                "provider": "Morris",
-                "date": "2026",
-                "language": "Igbo",
-                "category": "Opportunity"
+              "schema": {
+                "$ref": "#/components/schemas/Proverb"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Proverb created"
           }
         }
       }
     },
-
+    "/proverbs/{id}": {
+      "get": {
+        "summary": "Get one proverb",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single proverb"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a proverb",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Proverb"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a proverb",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
     "/tribes": {
       "get": {
         "summary": "Get all tribes",
@@ -58,25 +116,111 @@
       "post": {
         "summary": "Create a tribe",
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
-              "example": {
-                "tribe": "Yoruba",
-                "region": "South West",
-                "language": "Yoruba",
-                "population": "40 million",
-                "famousProverb": "What a child says he has heard at home",
-                "provider": "Morris",
-                "date": "2026"
+              "schema": {
+                "$ref": "#/components/schemas/Tribe"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Tribe created"
           }
+        }
+      }
+    },
+    "/tribes/{id}": {
+      "get": {
+        "summary": "Get one tribe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single tribe"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update tribe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tribe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete tribe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Proverb": {
+        "type": "object",
+        "properties": {
+          "proverb": { "type": "string" },
+          "meaning": { "type": "string" },
+          "tribe": { "type": "string" },
+          "provider": { "type": "string" },
+          "date": { "type": "string" },
+          "language": { "type": "string" },
+          "category": { "type": "string" }
+        }
+      },
+      "Tribe": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "region": { "type": "string" },
+          "language": { "type": "string" },
+          "population": { "type": "string" },
+          "state": { "type": "string" },
+          "culture": { "type": "string" },
+          "description": { "type": "string" }
         }
       }
     }
