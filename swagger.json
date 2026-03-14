@@ -16,7 +16,7 @@
         "summary": "Get all proverbs",
         "responses": {
           "200": {
-            "description": "List of proverbs"
+            "description": "Successful response"
           }
         }
       },
@@ -54,7 +54,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Single proverb"
+            "description": "Successful response"
           }
         }
       },
@@ -81,7 +81,7 @@
         },
         "responses": {
           "204": {
-            "description": "Updated"
+            "description": "Updated successfully"
           }
         }
       },
@@ -99,7 +99,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Deleted"
+            "description": "Deleted successfully"
           }
         }
       }
@@ -109,7 +109,7 @@
         "summary": "Get all tribes",
         "responses": {
           "200": {
-            "description": "List of tribes"
+            "description": "Successful response"
           }
         }
       },
@@ -146,12 +146,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Single tribe"
+            "description": "Successful response"
           }
         }
       },
       "put": {
-        "summary": "Update tribe",
+        "summary": "Update a tribe",
         "parameters": [
           {
             "name": "id",
@@ -173,12 +173,12 @@
         },
         "responses": {
           "204": {
-            "description": "Updated"
+            "description": "Updated successfully"
           }
         }
       },
       "delete": {
-        "summary": "Delete tribe",
+        "summary": "Delete a tribe",
         "parameters": [
           {
             "name": "id",
@@ -191,7 +191,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Deleted"
+            "description": "Deleted successfully"
           }
         }
       }
@@ -202,25 +202,53 @@
       "Proverb": {
         "type": "object",
         "properties": {
-          "proverb": { "type": "string" },
-          "meaning": { "type": "string" },
-          "tribe": { "type": "string" },
-          "provider": { "type": "string" },
-          "date": { "type": "string" },
-          "language": { "type": "string" },
-          "category": { "type": "string" }
+          "proverb": {
+            "type": "string"
+          },
+          "meaning": {
+            "type": "string"
+          },
+          "tribe": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          }
         }
       },
       "Tribe": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "region": { "type": "string" },
-          "language": { "type": "string" },
-          "population": { "type": "string" },
-          "state": { "type": "string" },
-          "culture": { "type": "string" },
-          "description": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "population": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "culture": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
         }
       }
     }
