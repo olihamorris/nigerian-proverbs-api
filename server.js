@@ -13,8 +13,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /* Routes */
 const proverbsRoutes = require("./routes/proverbs");
+const tribesRoutes = require("./routes/tribes");
 
 app.use("/proverbs", proverbsRoutes);
+app.use("/tribes", tribesRoutes);
 
 /* Home route */
 app.get("/", (req, res) => {
