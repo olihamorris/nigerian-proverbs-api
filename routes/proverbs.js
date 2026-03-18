@@ -2,15 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/proverbs");
+const ensureAuth = require("../middleware/auth");
 
-router.get("/", (req, res) => controller.getAll(req, res));
+router.get("/", controller.getAll);
+router.get("/:id", controller.getSingle);
 
-router.get("/:id", (req, res) => controller.getSingle(req, res));
-
-router.post("/", (req, res) => controller.createProverb(req, res));
-
-router.put("/:id", (req, res) => controller.updateProverb(req, res));
-
-router.delete("/:id", (req, res) => controller.deleteProverb(req, res));
+// PROTECTED
+router.post("/", ensureAuth, controller.createProverb);
+router.put("/:id", ensureAuth, controller.updateProverb);
+router.delete("/:id", ensureAuth, controller.deleteProverb);
 
 module.exports = router;

@@ -1,21 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const tribesController = require("../controllers/tribes");
+const controller = require("../controllers/tribes");
+const ensureAuth = require("../middleware/auth");
 
-// GET all tribes
-router.get("/", tribesController.getAll);
+router.get("/", controller.getAll);
+router.get("/:id", controller.getSingle);
 
-// GET a single tribe
-router.get("/:id", tribesController.getSingle);
-
-// POST create a tribe
-router.post("/", tribesController.createTribe);
-
-// PUT update a tribe
-router.put("/:id", tribesController.updateTribe);
-
-// DELETE a tribe
-router.delete("/:id", tribesController.deleteTribe);
+// PROTECTED
+router.post("/", ensureAuth, controller.createTribe);
+router.put("/:id", ensureAuth, controller.updateTribe);
+router.delete("/:id", ensureAuth, controller.deleteTribe);
 
 module.exports = router;

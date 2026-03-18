@@ -2,53 +2,104 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Nigerian Proverbs and Tribes API",
-    "description": "API for managing Nigerian proverbs and tribes information.",
+    "description": "API for managing Nigerian proverbs and tribes information with OAuth authentication.",
     "version": "1.0.0"
   },
   "servers": [
     {
-    "url": "https://nigerian-proverbs-api.onrender.com"
-  }
+      "url": "https://nigerian-proverbs-api.onrender.com"
+    }
   ],
+
+  "components": {
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+            "scopes": {
+              "profile": "Access user profile"
+            }
+          }
+        }
+      }
+    },
+
+    "schemas": {
+
+      "Proverb": {
+        "type": "object",
+        "required": [
+          "tribe",
+          "proverb",
+          "meaning",
+          "provider",
+          "date"
+        ],
+        "properties": {
+          "tribe": { "type": "string" },
+          "proverb": { "type": "string" },
+          "meaning": { "type": "string" },
+          "literalTranslation": { "type": "string" },
+          "usageContext": { "type": "string" },
+          "provider": { "type": "string" },
+          "date": { "type": "string" }
+        }
+      },
+
+      "Tribe": {
+        "type": "object",
+        "required": [
+          "name",
+          "region",
+          "language",
+          "provider",
+          "date"
+        ],
+        "properties": {
+          "name": { "type": "string" },
+          "region": { "type": "string" },
+          "language": { "type": "string" },
+          "population": { "type": "string" },
+          "culture": { "type": "string" },
+          "provider": { "type": "string" },
+          "date": { "type": "string" }
+        }
+      }
+    }
+  },
+
   "paths": {
+
     "/proverbs": {
       "get": {
         "summary": "Get all proverbs",
         "responses": {
           "200": {
-            "description": "List of proverbs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Proverb"
-                  }
-                }
-              }
-            }
+            "description": "List of proverbs"
           }
         }
       },
+
       "post": {
-        "summary": "Create a proverb",
+        "summary": "Create a proverb (Protected)",
+        "security": [{ "oauth2": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Proverb"
-              }
+              "schema": { "$ref": "#/components/schemas/Proverb" }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Proverb created"
-          }
+          "201": { "description": "Proverb created" },
+          "401": { "description": "Unauthorized" }
         }
       }
     },
+
     "/proverbs/{id}": {
       "get": {
         "summary": "Get proverb by id",
@@ -57,68 +108,53 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Proverb found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Proverb"
-                }
-              }
-            }
-          }
+          "200": { "description": "Proverb found" }
         }
       },
+
       "put": {
-        "summary": "Update proverb",
+        "summary": "Update proverb (Protected)",
+        "security": [{ "oauth2": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Proverb"
-              }
+              "schema": { "$ref": "#/components/schemas/Proverb" }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "Proverb updated"
-          }
+          "204": { "description": "Updated" },
+          "401": { "description": "Unauthorized" }
         }
       },
+
       "delete": {
-        "summary": "Delete proverb",
+        "summary": "Delete proverb (Protected)",
+        "security": [{ "oauth2": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Proverb deleted"
-          }
+          "204": { "description": "Deleted" },
+          "401": { "description": "Unauthorized" }
         }
       }
     },
@@ -128,36 +164,25 @@
         "summary": "Get all tribes",
         "responses": {
           "200": {
-            "description": "List of tribes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Tribe"
-                  }
-                }
-              }
-            }
+            "description": "List of tribes"
           }
         }
       },
+
       "post": {
-        "summary": "Create a tribe",
+        "summary": "Create a tribe (Protected)",
+        "security": [{ "oauth2": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Tribe"
-              }
+              "schema": { "$ref": "#/components/schemas/Tribe" }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Tribe created"
-          }
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" }
         }
       }
     },
@@ -170,148 +195,47 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Tribe found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Tribe"
-                }
-              }
-            }
-          }
+          "200": { "description": "Found" }
         }
       },
+
       "put": {
-        "summary": "Update tribe",
+        "summary": "Update tribe (Protected)",
+        "security": [{ "oauth2": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Tribe"
-              }
-            }
-          }
-        },
         "responses": {
-          "204": {
-            "description": "Tribe updated"
-          }
+          "204": { "description": "Updated" },
+          "401": { "description": "Unauthorized" }
         }
       },
+
       "delete": {
-        "summary": "Delete tribe",
+        "summary": "Delete tribe (Protected)",
+        "security": [{ "oauth2": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Tribe deleted"
-          }
+          "204": { "description": "Deleted" },
+          "401": { "description": "Unauthorized" }
         }
       }
-    }
-  },
-
-  "components": {
-    "schemas": {
-
-      "Proverb": {
-        "type": "object",
-        "required": [
-          "tribe",
-          "proverb",
-          "meaning",
-          "literalTranslation",
-          "usageContext",
-          "provider",
-          "date"
-        ],
-        "properties": {
-          "tribe": {
-            "type": "string"
-          },
-          "proverb": {
-            "type": "string"
-          },
-          "meaning": {
-            "type": "string"
-          },
-          "literalTranslation": {
-            "type": "string"
-          },
-          "usageContext": {
-            "type": "string"
-          },
-          "provider": {
-            "type": "string"
-          },
-          "date": {
-            "type": "string"
-          }
-        }
-      },
-
-      "Tribe": {
-        "type": "object",
-        "required": [
-          "name",
-          "region",
-          "language",
-          "population",
-          "culture",
-          "provider",
-          "date"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "region": {
-            "type": "string"
-          },
-          "language": {
-            "type": "string"
-          },
-          "population": {
-            "type": "string"
-          },
-          "culture": {
-            "type": "string"
-          },
-          "provider": {
-            "type": "string"
-          },
-          "date": {
-            "type": "string"
-          }
-        }
-      }
-
     }
   }
 }
