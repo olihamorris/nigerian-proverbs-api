@@ -24,9 +24,7 @@ app.use(passport.session());
 
 /* Swagger */
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.get("/", (req, res) => {
-  res.send("Welcome to Nigerian Proverbs API");
-});
+
 
 
 /* Routes */
@@ -56,7 +54,7 @@ app.get("/logout", (req, res) => {
 
 /* Home route */
 app.get("/", (req, res) => {
-  res.send("Nigerian Proverbs API");
+  res.send("Welcome to Nigerian Proverbs API");
 });
 
 /* Database connection */

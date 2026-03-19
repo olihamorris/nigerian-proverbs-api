@@ -2,9 +2,9 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 passport.use(new GoogleStrategy({
-  clientID: "YOUR_CLIENT_ID",
-  clientSecret: "YOUR_CLIENT_SECRET",
-  callbackURL: "/auth/google/callback"
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "https://nigerian-proverbs-api.onrender.com/auth/google/callback"
 },
 (accessToken, refreshToken, profile, done) => {
   return done(null, profile);
