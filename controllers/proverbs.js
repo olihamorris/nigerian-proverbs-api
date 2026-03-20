@@ -1,3 +1,4 @@
+
 const mongodb = require("../db/connect");
 const ObjectId = require("mongodb").ObjectId;
 
@@ -16,6 +17,11 @@ const getSingle = async (req, res) => {
     const proverbId = new ObjectId(req.params.id);
     const result = await mongodb.getDb().db().collection("proverbs").find({ _id: proverbId });
     const proverb = await result.toArray();
+
+    if (!proverb[0]) {
+      return res.status(404).json("Proverb not found");
+    }
+
     res.status(200).json(proverb[0]);
   } catch (err) {
     res.status(500).json(err.message);
@@ -101,3 +107,6 @@ module.exports = {
   updateProverb,
   deleteProverb
 };
+
+
+

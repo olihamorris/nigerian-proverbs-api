@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongodb = require("./db/connect");
 const swaggerUi = require("swagger-ui-express");
@@ -5,7 +6,9 @@ const swaggerDocument = require("./swagger.json");
 
 const session = require("express-session");
 const passport = require("passport");
-require("./config/passport"); // important
+require("./config/passport");
+
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -14,9 +17,9 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 
 app.use(session({
-  secret: "secret",
+  secret: process.env.SESSION_SECRET || "secret",
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 }));
 
 app.use(passport.initialize());
@@ -24,8 +27,6 @@ app.use(passport.session());
 
 /* Swagger */
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-
 
 /* Routes */
 const proverbsRoutes = require("./routes/proverbs");
@@ -52,18 +53,18 @@ app.get("/logout", (req, res) => {
   });
 });
 
-/* Home route */
+/* Home */
 app.get("/", (req, res) => {
   res.send("Welcome to Nigerian Proverbs API");
 });
 
-/* Database connection */
+/* DB */
 mongodb.initDb((err) => {
   if (err) {
     console.log(err);
   } else {
     app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
+      console.log(Server running on port ${port});
     });
   }
 });

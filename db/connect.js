@@ -1,3 +1,4 @@
+
 const MongoClient = require("mongodb").MongoClient;
 const dotenv = require("dotenv");
 
@@ -11,7 +12,10 @@ const initDb = (callback) => {
     return callback(null, database);
   }
 
-  MongoClient.connect(process.env.MONGODB_URI)
+  MongoClient.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
     .then((client) => {
       database = client;
       callback(null, database);
@@ -29,3 +33,4 @@ const getDb = () => {
 };
 
 module.exports = { initDb, getDb };
+

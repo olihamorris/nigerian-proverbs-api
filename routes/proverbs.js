@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 
@@ -13,3 +14,4 @@ router.put("/:id", ensureAuth, controller.updateProverb);
 router.delete("/:id", ensureAuth, controller.deleteProverb);
 
 module.exports = router;
+

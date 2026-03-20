@@ -1,3 +1,4 @@
+
 const mongodb = require("../db/connect");
 const ObjectId = require("mongodb").ObjectId;
 
@@ -16,6 +17,11 @@ const getSingle = async (req, res) => {
     const tribeId = new ObjectId(req.params.id);
     const result = await mongodb.getDb().db().collection("tribes").find({ _id: tribeId });
     const tribe = await result.toArray();
+
+    if (!tribe[0]) {
+      return res.status(404).json("Tribe not found");
+    }
+
     res.status(200).json(tribe[0]);
   } catch (err) {
     res.status(500).json(err.message);
@@ -101,3 +107,4 @@ module.exports = {
   updateTribe,
   deleteTribe
 };
+
