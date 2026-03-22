@@ -20,6 +20,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "secret",
     resave: false,
     saveUninitialized: false,
+    cookie: { secure: false } // ✅ important for Render
   })
 );
 
@@ -37,23 +38,30 @@ app.use("/proverbs", proverbsRoutes);
 app.use("/tribes", tribesRoutes);
 
 /* OAuth Routes */
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
-);
+app.get("/auth/google", (req, res, next) => {
+  console.log("Auth route hit"); // ✅ DEBUG
+  next();
+}, passport.authenticate("google", { scope: ["profile"] }));
 
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
+    console.log("Login successful:", req.user); // ✅ DEBUG
     res.redirect("/api-docs");
   }
 );
 
+/* Logout */
 app.get("/logout", (req, res) => {
   req.logout(() => {
     res.redirect("/");
   });
+});
+
+/* Test route (VERY IMPORTANT) */
+app.get("/test-auth", (req, res) => {
+  res.send("Auth route working");
 });
 
 /* Home */
@@ -64,10 +72,10 @@ app.get("/", (req, res) => {
 /* DB */
 mongodb.initDb((err) => {
   if (err) {
-    console.log(err);
+    console.log("DB ERROR:", err);
   } else {
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
   }
-});  
+});
