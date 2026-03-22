@@ -7,6 +7,7 @@ const session = require("express-session");
 const passport = require("passport");
 require("./config/passport");
 
+const cors = require("cors"); // ✅ ADD THIS
 require("dotenv").config();
 
 const app = express();
@@ -15,12 +16,24 @@ const port = process.env.PORT || 8080;
 /* Middleware */
 app.use(express.json());
 
+// ✅ ADD CORS (THIS FIXES "Failed to fetch")
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+  })
+);
+
+// ✅ VERY IMPORTANT (handles preflight requests)
+app.options("*", cors());
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "secret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // ✅ important for Render
+    cookie: { secure: false }
   })
 );
 
@@ -38,16 +51,15 @@ app.use("/proverbs", proverbsRoutes);
 app.use("/tribes", tribesRoutes);
 
 /* OAuth Routes */
-app.get("/auth/google", (req, res, next) => {
-  console.log("Auth route hit"); // ✅ DEBUG
-  next();
-}, passport.authenticate("google", { scope: ["profile"] }));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile"] })
+);
 
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
-    console.log("Login successful:", req.user); // ✅ DEBUG
     res.redirect("/api-docs");
   }
 );
@@ -59,7 +71,7 @@ app.get("/logout", (req, res) => {
   });
 });
 
-/* Test route (VERY IMPORTANT) */
+/* Test route */
 app.get("/test-auth", (req, res) => {
   res.send("Auth route working");
 });
