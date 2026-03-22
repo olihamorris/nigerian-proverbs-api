@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mongodb = require("./db/connect");
 const swaggerUi = require("swagger-ui-express");
@@ -16,11 +15,13 @@ const port = process.env.PORT || 8080;
 /* Middleware */
 app.use(express.json());
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || "secret",
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -36,11 +37,13 @@ app.use("/proverbs", proverbsRoutes);
 app.use("/tribes", tribesRoutes);
 
 /* OAuth Routes */
-app.get("/auth/google",
+app.get(
+  "/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
 );
 
-app.get("/auth/google/callback",
+app.get(
+  "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
     res.redirect("/api-docs");
@@ -64,7 +67,7 @@ mongodb.initDb((err) => {
     console.log(err);
   } else {
     app.listen(port, () => {
-      console.log(Server running on port ${port});
+      console.log(`Server running on port ${port}`);
     });
   }
-});
+});  
