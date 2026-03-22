@@ -1,10 +1,9 @@
-
 const mongodb = require("../db/connect");
 const ObjectId = require("mongodb").ObjectId;
 
 const getAll = async (req, res) => {
   try {
-    const result = await mongodb.getDb().db().collection("tribes").find();
+    const result = await mongodb.getDb().collection("tribes").find();
     const tribes = await result.toArray();
     res.status(200).json(tribes);
   } catch (err) {
@@ -15,7 +14,7 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
   try {
     const tribeId = new ObjectId(req.params.id);
-    const result = await mongodb.getDb().db().collection("tribes").find({ _id: tribeId });
+    const result = await mongodb.getDb().collection("tribes").find({ _id: tribeId });
     const tribe = await result.toArray();
 
     if (!tribe[0]) {
@@ -44,7 +43,7 @@ const createTribe = async (req, res) => {
       date: req.body.date
     };
 
-    const response = await mongodb.getDb().db().collection("tribes").insertOne(tribe);
+    const response = await mongodb.getDb().collection("tribes").insertOne(tribe);
 
     res.status(201).json(response);
   } catch (err) {
@@ -70,7 +69,7 @@ const updateTribe = async (req, res) => {
       date: req.body.date
     };
 
-    const response = await mongodb.getDb().db().collection("tribes")
+    const response = await mongodb.getDb().collection("tribes")
       .replaceOne({ _id: tribeId }, tribe);
 
     if (response.modifiedCount > 0) {
@@ -87,7 +86,7 @@ const deleteTribe = async (req, res) => {
   try {
     const tribeId = new ObjectId(req.params.id);
 
-    const response = await mongodb.getDb().db().collection("tribes")
+    const response = await mongodb.getDb().collection("tribes")
       .deleteOne({ _id: tribeId });
 
     if (response.deletedCount > 0) {
@@ -107,4 +106,3 @@ module.exports = {
   updateTribe,
   deleteTribe
 };
-
