@@ -7,33 +7,26 @@ const session = require("express-session");
 const passport = require("passport");
 require("./config/passport");
 
-const cors = require("cors"); // ✅ ADD THIS
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 8080;
 
+/* TRUST PROXY (VERY IMPORTANT FOR RENDER) */
+app.set("trust proxy", 1);
+
 /* Middleware */
 app.use(express.json());
-
-// ✅ ADD CORS (THIS FIXES "Failed to fetch")
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
-
-// ✅ VERY IMPORTANT (handles preflight requests)
-app.options("*", cors());
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "secret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: {
+      secure: false,       // must be false for Render (HTTP behind proxy)
+      httpOnly: true
+    }
   })
 );
 
@@ -51,8 +44,7 @@ app.use("/proverbs", proverbsRoutes);
 app.use("/tribes", tribesRoutes);
 
 /* OAuth Routes */
-app.get(
-  "/auth/google",
+app.get("/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
 );
 
@@ -60,6 +52,7 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
+    console.log("Login successful:", req.user);
     res.redirect("/api-docs");
   }
 );
